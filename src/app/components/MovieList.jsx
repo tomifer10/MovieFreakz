@@ -45,7 +45,7 @@ export default async function MovieList() {
               </div>
             </div>
             <div className="flex gap-2">
-              <RemoveBtn />
+              <RemoveBtn id={m._id} />
               <Link href={`/editMovie/${m._id}`}>
                 <HiPencilAlt size={24} />
               </Link>

@@ -1,26 +1,34 @@
-export default function EditMovie() {
+import EditTopicForm from "@/app/components/EditTopicForm";
+
+const getMovieById = async () => {
+  try {
+    const res = await fetch(`http://localhost:3000/api/movies/${id}`, {
+      cache: "no-store",
+    });
+    if (!res.ok) {
+      throw new Error("Failed to fetch movie");
+    }
+    return res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export default async function EditMovie({ params }) {
+  const { id } = params;
+  const movieData = await getMovieById(id);
+
+  if (!movieData || !movieData.movie) {
+    console.error("Movie data is not available");
+    // You can render an error component or message here
+    return <div>Failed to load movie data</div>;
+  }
+
+  const { movie } = movieData;
+  const { title, sinopsis, image } = movie;
+  console.log("id:", id);
+
   return (
-    <div>
-      <form className="flex flex-col gap-3">
-        <input
-          className="border border-slate-500 px-8 py-2"
-          type="text"
-          placeholder="Movie Title"
-        />
-        <input
-          className="border border-slate-500 px-8 py-2"
-          type="text"
-          placeholder="Movie Sinopsis"
-        />
-        <input
-          className="border border-slate-500 px-8 py-2"
-          type="text"
-          placeholder="Movie Image"
-        />
-        <button className="bg-green-600 font-bold text-white py-3 px-6 w-fit">
-          Update Movie
-        </button>
-      </form>
-    </div>
+    <EditTopicForm id={id} title={title} sinopsis={sinopsis} image={image} />
   );
 }
